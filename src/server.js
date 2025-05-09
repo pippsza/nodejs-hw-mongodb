@@ -1,13 +1,13 @@
-import pinoHttp from 'pino-http';
-
 import 'dotenv/config';
 import express from 'express';
 import { getEnvVar } from './utils/getEnvVar.js';
-import { Contact } from './models/contacts.js';
-import cors from 'cors';
+
+import { getAllContacts, getContactById } from './services/contacts.js';
+import { loggerMiddleware } from './middlewares/contactMiddlewares.js';
+import { corsMiddleware } from './middlewares/corsMidleware.js';
 
 const app = express();
-const logger = pinoHttp();
+
 const PORT = getEnvVar('PORT');
 
 async function setupServer() {
@@ -16,19 +16,7 @@ async function setupServer() {
       if (error) {
         throw error;
       }
-      app.use(
-        cors({
-          origin: `http://localhost:${PORT}`,
-          optionsSuccessStatus: 200,
-        }),
-      );
-
-      function loggerMiddleware(req, res, next) {
-        logger(req, res);
-        //   req.log.info('something else');
-        //   res.end('hello world');
-        next();
-      }
+      app.use(corsMiddleware);
 
       app.use(loggerMiddleware);
 
@@ -40,8 +28,7 @@ async function setupServer() {
 }
 
 app.get('/contacts', async (req, res) => {
-  const contacts = await Contact.find();
-
+  const contacts = await getAllContacts();
   res.json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -51,7 +38,11 @@ app.get('/contacts', async (req, res) => {
 
 app.get('/contacts/:contactId', async (req, res) => {
   const id = req.params.contactId;
-  const contacts = await Contact.findById(id);
+
+  const contacts = await getContactById(id);
+  if (contacts == null) {
+    return res.status(404).send({ message: 'Contact not found' });
+  }
   res.json({
     status: 200,
     message: 'Successfully found contacts!',
