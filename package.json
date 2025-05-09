@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -14,18 +15,18 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/pippsza/nodejs-hw-mongodb/issues"
   },
   "homepage": "https://github.com/pippsza/nodejs-hw-mongodb#readme",
   "dependencies": {
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "mongoose": "^8.14.1",
     "@eslint/js": "^9.20.0",
+    "dotenv": "^16.5.0",
     "eslint": "^9.20.1",
+    "express": "^5.1.0",
     "globals": "^15.15.0",
+    "mongoose": "^8.14.1",
+    "pino-http": "^10.4.0",
     "prettier": "^3.5.1"
   },
   "devDependencies": {
