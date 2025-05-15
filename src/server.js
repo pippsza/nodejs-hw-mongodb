@@ -1,10 +1,11 @@
 import 'dotenv/config';
 import express from 'express';
 import { getEnvVar } from './utils/getEnvVar.js';
-
-import { getAllContacts, getContactById } from './services/contacts.js';
+import contactRoutes from './routes/contacts.js';
 import { loggerMiddleware } from './middlewares/contactMiddlewares.js';
 import { corsMiddleware } from './middlewares/corsMidleware.js';
+import notFoundHandler from './middlewares/notFoundHandler.js';
+import errorHandler from './middlewares/errorHandler.js';
 
 const app = express();
 
@@ -26,32 +27,13 @@ async function setupServer() {
     console.error(error);
   }
 }
+app.use('/contacts', contactRoutes);
 
-app.get('/contacts', async (req, res) => {
-  const contacts = await getAllContacts();
-  res.json({
-    status: 200,
-    message: 'Successfully found contacts!',
-    data: contacts,
-  });
+app.use((req, res, next) => {
+  return notFoundHandler(req, res, next);
 });
-
-app.get('/contacts/:contactId', async (req, res) => {
-  const id = req.params.contactId;
-
-  const contacts = await getContactById(id);
-  if (contacts == null) {
-    return res.status(404).send({ message: 'Contact not found' });
-  }
-  res.json({
-    status: 200,
-    message: 'Successfully found contacts!',
-    data: contacts,
-  });
-});
-
-app.use((req, res) => {
-  res.status(404).json({ message: 'Not found' });
+app.use((err, req, res, next) => {
+  errorHandler(err, req, res, next);
 });
 
 export default setupServer;
