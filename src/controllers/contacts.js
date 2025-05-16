@@ -6,7 +6,6 @@ import {
   postContact,
   updateContact,
 } from '../services/contacts.js';
-import notFoundHandler from '../middlewares/notFoundHandler.js';
 
 export async function getAllContactsConroller(req, res) {
   const contacts = await getAllContacts();
