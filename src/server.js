@@ -11,30 +11,23 @@ const app = express();
 
 const PORT = getEnvVar('PORT');
 
-async function setupServer() {
-  try {
-    app.listen(PORT, (error) => {
-      if (error) {
-        throw error;
-      }
-      app.use(corsMiddleware);
-
-      app.use(loggerMiddleware);
-
-      console.log(`Server started on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
 app.use('/contacts', contactRoutes);
 
-app.use((req, res, next) => {
-  return notFoundHandler(req, res, next);
-});
+app.use(notFoundHandler);
 
-app.use((err, req, res, next) => {
-  errorHandler(err, req, res, next);
-});
+app.use(errorHandler);
+
+async function setupServer() {
+  app.use(corsMiddleware);
+
+  app.use(loggerMiddleware);
+
+  console.log(`Server started on port ${PORT}`);
+  app.listen(PORT, (error) => {
+    if (error) {
+      throw error;
+    }
+  });
+}
 
 export default setupServer;

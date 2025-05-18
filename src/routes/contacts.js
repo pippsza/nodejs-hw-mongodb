@@ -25,7 +25,4 @@ contactRoutes.patch(
   ctrlWrapper(updateContactController),
 );
 
-contactRoutes.use((req, res) => {
-  res.status(404).json({ message: 'Not found' });
-});
 export default contactRoutes;
