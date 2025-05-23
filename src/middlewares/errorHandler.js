@@ -3,7 +3,7 @@ export default function errorHandler(err, req, res, next) {
   if (isHttpError(err) === true) {
     return res
       .status(err.status)
-      .json({ status: err.status, data: err.message });
+      .json({ status: err.status, message: err.message });
   }
   console.error('err handler: ', err);
   res

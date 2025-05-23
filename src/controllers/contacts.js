@@ -6,9 +6,23 @@ import {
   postContact,
   updateContact,
 } from '../services/contacts.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { parseFilterParams } from '../utils/parseFiltersParams.js';
 
 export async function getAllContactsConroller(req, res) {
-  const contacts = await getAllContacts();
+  const query = req.query;
+  const { page, perPage } = parsePaginationParams(query);
+  const { sortBy, sortOrder } = parseSortParams(query);
+  const filter = parseFilterParams(query);
+
+  const contacts = await getAllContacts(
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  );
   if (contacts === null) {
     throw new createHttpError.NotFound('Contact not found.');
   }
