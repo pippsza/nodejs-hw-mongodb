@@ -9,16 +9,17 @@ export const getAllContacts = async (
 ) => {
   const contactQuery = Contact.find();
   if (typeof filter.type != 'undefined') {
-    (await contactQuery.where('type')).equals(filter.type);
+    contactQuery.where('contactType').equals(filter.type);
   }
-  if (filter.isFavourite) {
-    (await contactQuery.where('isFavourite')).equals(filter.isFavourite);
+  if (filter.isFavourite == true || filter.isFavourite == false) {
+    contactQuery.where('isFavourite').equals(filter.isFavourite);
   }
   const skip = page > 0 ? (page - 1) * perPage : 0;
 
   const [totalItems, contacts] = await Promise.all([
     Contact.countDocuments(contactQuery),
     Contact.find()
+      .merge(contactQuery)
       .sort({ [sortBy]: sortOrder })
       .skip(skip)
       .limit(perPage),
