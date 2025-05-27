@@ -6,10 +6,11 @@ import { loggerMiddleware } from './middlewares/contactMiddlewares.js';
 import { corsMiddleware } from './middlewares/corsMidleware.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/errorHandler.js';
-
+import authRoutes from './routes/auth.js';
 const app = express();
 
 const PORT = getEnvVar('PORT');
+app.use('/auth', authRoutes);
 
 app.use('/contacts', contactRoutes);
 
