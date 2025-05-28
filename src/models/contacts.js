@@ -25,6 +25,9 @@ const contactSchema = new mongoose.Schema(
       enum: ['work', 'home', 'personal'],
       default: 'personal',
     },
+    ownerId: {
+      // type: mongoose.
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import { getEnvVar } from './utils/getEnvVar.js';
 import contactRoutes from './routes/contacts.js';
 import { loggerMiddleware } from './middlewares/contactMiddlewares.js';
@@ -7,12 +8,14 @@ import { corsMiddleware } from './middlewares/corsMidleware.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/errorHandler.js';
 import authRoutes from './routes/auth.js';
+import { auth } from './middlewares/auth.js';
 const app = express();
 
 const PORT = getEnvVar('PORT');
+app.use(cookieParser());
 app.use('/auth', authRoutes);
 
-app.use('/contacts', contactRoutes);
+app.use('/contacts', auth, contactRoutes);
 
 app.use(notFoundHandler);
 

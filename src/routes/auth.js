@@ -2,7 +2,12 @@ import express from 'express';
 import validateBody from '../middlewares/validateBody.js';
 import { loginSchema, registerSchema } from '../validation/auth.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
-import { loginController, registerController } from '../controllers/auth.js';
+import {
+  loginController,
+  registerController,
+  logoutController,
+  refreshController,
+} from '../controllers/auth.js';
 const authRoutes = express.Router();
 const jsonParser = express.json();
 authRoutes.post(
@@ -13,9 +18,11 @@ authRoutes.post(
 );
 
 authRoutes.post(
-  'login',
+  '/login',
   jsonParser,
   validateBody(loginSchema),
   ctrlWrapper(loginController),
 );
+authRoutes.post('/refresh', ctrlWrapper(refreshController));
+authRoutes.post('/logout', ctrlWrapper(logoutController));
 export default authRoutes;
