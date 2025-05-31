@@ -13,9 +13,8 @@ const app = express();
 
 const PORT = getEnvVar('PORT');
 app.use(cookieParser());
-app.use('/auth', authRoutes);
-
 app.use('/contacts', auth, contactRoutes);
+app.use('/auth', authRoutes);
 
 app.use(notFoundHandler);
 

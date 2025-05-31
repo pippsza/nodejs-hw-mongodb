@@ -19,12 +19,13 @@ export async function auth(req, res, next) {
   }
 
   if (session.accessTokenValidUntil < new Date()) {
-    next(new createHttpError.Unauthorized('Token is expired'));
+    next(new createHttpError.Unauthorized('Access token expired'));
   }
   const user = User.findOne({ _id: session.userId });
   if (user === null) {
     next(new createHttpError.Unauthorized('User not found'));
   }
   req.user = { id: user._id, name: user.name };
+
   next();
 }

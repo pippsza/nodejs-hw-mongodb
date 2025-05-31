@@ -3,7 +3,10 @@ import createHttpError from 'http-errors';
 import { User } from '../models/user.model.js';
 import { Session } from '../models/session.model.js';
 import crypto from 'node:crypto';
-const dataExpired = new Date(Date.now() + 10 * 60 * 1000);
+
+const dataExpiredForToken = new Date(Date.now() + 15 * 60 * 1000);
+const dataExpiredForRefresh = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+
 export async function registerUser(payload) {
   const user = await User.findOne({ email: payload.email });
   if (user !== null) {
@@ -30,8 +33,8 @@ export async function loginUser(email, password) {
     userId: user._id,
     accessToken: accessToken,
     refreshToken: refreshToken,
-    accessTokenValidUntil: dataExpired,
-    refreshTokenValidUntil: dataExpired,
+    accessTokenValidUntil: dataExpiredForToken,
+    refreshTokenValidUntil: dataExpiredForRefresh,
   });
 }
 export async function logoutUser(sessionId, refreshToken) {
@@ -56,7 +59,7 @@ export async function refreshSession(sessionId, refreshToken) {
     userId: session._id,
     accessToken: accessToken,
     refreshToken: newRefreshToken,
-    accessTokenValidUntil: dataExpired,
-    refreshTokenValidUntil: dataExpired,
+    accessTokenValidUntil: dataExpiredForToken,
+    refreshTokenValidUntil: dataExpiredForRefresh,
   });
 }
