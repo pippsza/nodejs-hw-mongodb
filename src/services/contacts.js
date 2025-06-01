@@ -42,8 +42,8 @@ export const getContactById = async ({ id, ownerId }) => {
   return contacts;
 };
 
-export const postContact = async ({ payload }) => {
-  return Contact.create(payload);
+export const postContact = async ({ payload, ownerId }) => {
+  return Contact.create({ ...payload, userId: ownerId });
 };
 
 export const updateContact = async ({ id, payload, ownerId }) => {
@@ -53,5 +53,5 @@ export const updateContact = async ({ id, payload, ownerId }) => {
 };
 
 export const deleteContact = async ({ id, ownerId }) => {
-  return Contact.findOneAndDelete(id, ownerId);
+  return Contact.findOneAndDelete({ _id: id, userId: ownerId });
 };

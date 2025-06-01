@@ -14,7 +14,7 @@ export async function auth(req, res, next) {
   }
 
   const session = Session.findOne({ accessToken });
-  if (session === null) {
+  if (!session) {
     next(new createHttpError.Unauthorized('Session not found'));
   }
 

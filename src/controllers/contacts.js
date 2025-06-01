@@ -49,7 +49,10 @@ export async function getContactByIdController(req, res) {
 }
 
 export async function postContactController(req, res) {
-  const contact = await postContact(req.body);
+  const contact = await postContact({
+    payload: req.body,
+    ownerId: req.user.id,
+  });
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
