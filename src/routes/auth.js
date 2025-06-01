@@ -8,6 +8,7 @@ import {
   logoutController,
   refreshController,
 } from '../controllers/auth.js';
+
 const authRoutes = express.Router();
 const jsonParser = express.json();
 authRoutes.post(
@@ -25,4 +26,5 @@ authRoutes.post(
 );
 authRoutes.post('/refresh', ctrlWrapper(refreshController));
 authRoutes.post('/logout', ctrlWrapper(logoutController));
+
 export default authRoutes;

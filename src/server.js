@@ -12,19 +12,22 @@ import { auth } from './middlewares/auth.js';
 const app = express();
 
 const PORT = getEnvVar('PORT');
-app.use(cookieParser());
-app.use('/contacts', auth, contactRoutes);
-app.use('/auth', authRoutes);
 
-app.use(notFoundHandler);
+app.use(cookieParser());
+
+app.use(corsMiddleware);
+
+app.use(loggerMiddleware);
+
+app.use('/contacts', auth, contactRoutes);
+
+app.use('/auth', authRoutes);
 
 app.use(errorHandler);
 
+app.use(notFoundHandler);
+
 async function setupServer() {
-  app.use(corsMiddleware);
-
-  app.use(loggerMiddleware);
-
   console.log(`Server started on port ${PORT}`);
   app.listen(PORT, (error) => {
     if (error) {

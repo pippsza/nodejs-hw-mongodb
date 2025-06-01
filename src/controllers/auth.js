@@ -1,11 +1,6 @@
-import {
-  loginUser,
-  logoutUser,
-  registerUser,
-  refreshSession,
-} from '../services/auth.js';
+import { loginUser, logoutUser, registerUser } from '../services/auth.js';
 
-export async function registerController(req, res) {
+export async function registerController(req, res, next) {
   const user = await registerUser(req.body);
   res.status(201).json({
     status: 201,
@@ -17,11 +12,11 @@ export async function registerController(req, res) {
 export async function loginController(req, res) {
   const session = await loginUser(req.body.email, req.body.password);
   res.cookie('sessionId', session._id, {
-    htttpOnly: true,
+    httpOnly: true,
     expire: session.refreshTokenValidUntil,
   });
   res.cookie('refreshToken', session.refreshToken, {
-    htttpOnly: true,
+    httpOnly: true,
     expire: session.refreshTokenValidUntil,
   });
   res.json({

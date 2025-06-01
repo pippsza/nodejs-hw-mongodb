@@ -18,6 +18,7 @@ export async function registerUser(payload) {
 
 export async function loginUser(email, password) {
   const user = await User.findOne({ email });
+
   if (user === null) {
     throw new createHttpError.Unauthorized('Email or password is incorrect');
   }
