@@ -28,11 +28,11 @@ app.use(errorHandler);
 app.use(notFoundHandler);
 
 async function setupServer() {
-  console.log(`Server started on port ${PORT}`);
   app.listen(PORT, (error) => {
     if (error) {
       throw error;
     }
+    console.log(`Server started on port ${PORT}`);
   });
 }
 

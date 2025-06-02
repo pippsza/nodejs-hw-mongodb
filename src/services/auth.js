@@ -45,10 +45,10 @@ export async function logoutUser(sessionId, refreshToken) {
 export async function refreshSession(sessionId, refreshToken) {
   const session = await Session.findOne({ _id: sessionId });
   if (session == null) {
-    createHttpError.Unauthorized('Session not found.');
+    throw new createHttpError.Unauthorized('Session not found.');
   }
   if (session.refreshToken !== refreshToken) {
-    createHttpError.Unauthorized('Refresh token is invalid');
+    throw new createHttpError.Unauthorized('Refresh token is invalid');
   }
   if (session.refreshTokenValidUntil < new Date()) {
     throw new createHttpError.Unauthorized('Refresh token is expired.');
