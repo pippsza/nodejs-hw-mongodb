@@ -13,11 +13,13 @@ import {
 import validateBody from '../middlewares/validateBody.js';
 import { contactSchema, updatecontactSchema } from '../validation/contacts.js';
 import isValidId from '../middlewares/isValidId.js';
+import { upload } from '../middlewares/upload.js';
 
 contactRoutes.get('/', ctrlWrapper(getAllContactsConroller));
 
 contactRoutes.post(
   '/',
+  upload.single('photo'),
   jsonParser,
   validateBody(contactSchema),
   ctrlWrapper(postContactController),
@@ -37,6 +39,7 @@ contactRoutes.delete(
 
 contactRoutes.patch(
   '/:contactId',
+  upload.single('photo'),
   jsonParser,
   validateBody(updatecontactSchema),
   isValidId,

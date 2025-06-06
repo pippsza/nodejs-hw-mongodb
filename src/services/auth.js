@@ -95,7 +95,6 @@ export async function sendResetEmail(email) {
   await sendMail(
     user.email,
     'Reset password',
-    '<p>Reset password: link </p>',
 
     template({
       link: `${getEnvVar('APP_DOMAIN')}reset-password/?token=${token}`,
