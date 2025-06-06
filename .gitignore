@@ -136,4 +136,5 @@ dist
 .pnp.*
 
 #uploaded
-/src/tmp
+/src/tmp/*
+!/src/tmp/.gitkeep
