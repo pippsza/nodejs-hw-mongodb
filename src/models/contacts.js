@@ -29,6 +29,11 @@ const contactSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    photo: {
+      type: String,
+      reqired: false,
+      default: null,
+    },
   },
   {
     timestamps: true,

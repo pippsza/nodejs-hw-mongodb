@@ -138,3 +138,5 @@ dist
 #uploaded
 /src/tmp/*
 !/src/tmp/.gitkeep
+/src/uploads/avatars/*
+!/src/uploads/avatars/.gitkeep

@@ -6,6 +6,8 @@ import {
   postContact,
   updateContact,
 } from '../services/contacts.js';
+import path from 'node:path';
+import * as fs from 'node:fs/promises';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFiltersParams.js';
@@ -49,9 +51,14 @@ export async function getContactByIdController(req, res) {
 }
 
 export async function postContactController(req, res) {
+  await fs.rename(
+    req.file.path,
+    path.resolve('src', 'uploads', 'avatars', req.file.filename),
+  );
   const contact = await postContact({
     payload: req.body,
     ownerId: req.user.id,
+    photo: req.file.filename,
   });
   res.status(201).json({
     status: 201,

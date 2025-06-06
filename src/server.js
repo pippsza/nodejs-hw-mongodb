@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import path from 'node:path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import { getEnvVar } from './utils/getEnvVar.js';
@@ -12,6 +13,8 @@ import { auth } from './middlewares/auth.js';
 const app = express();
 
 const PORT = getEnvVar('PORT');
+
+app.use('/avatars', express.static(path.resolve('src', 'uploads', 'avatars')));
 
 app.use(cookieParser());
 
