@@ -11,6 +11,8 @@ import * as fs from 'node:fs/promises';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFiltersParams.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { uploadToCloudinary } from '../utils/uploadToCloudinary.js';
 
 export async function getAllContactsConroller(req, res) {
   const query = req.query;
@@ -51,14 +53,28 @@ export async function getContactByIdController(req, res) {
 }
 
 export async function postContactController(req, res) {
-  await fs.rename(
-    req.file.path,
-    path.resolve('src', 'uploads', 'avatars', req.file.filename),
-  );
+  let photo = null;
+
+  if (req.filepath !== undefined) {
+    if (getEnvVar('UPLOAD_TO_CLOUDINARY') === 'true') {
+      const result = await uploadToCloudinary(req.file.path);
+      await fs.unlink(req.file.path);
+
+      photo = result.secure_url;
+    } else {
+      await fs.rename(
+        req.file.path,
+        path.resolve('src', 'uploads', 'avatars', req.file.filename),
+      );
+
+      photo = `${getEnvVar('APP_DOMAIN')}avatars/${req.file.filename}`;
+    }
+  }
+
   const contact = await postContact({
     payload: req.body,
     ownerId: req.user.id,
-    photo: req.file.filename,
+    photo,
   });
   res.status(201).json({
     status: 201,
@@ -68,10 +84,29 @@ export async function postContactController(req, res) {
 }
 
 export async function updateContactController(req, res) {
+  let photo = null;
+
+  if (req.filepath !== undefined) {
+    if (getEnvVar('UPLOAD_TO_CLOUDINARY') === 'true') {
+      const result = await uploadToCloudinary(req.file.path);
+      await fs.unlink(req.file.path);
+
+      photo = result.secure_url;
+    } else {
+      await fs.rename(
+        req.file.path,
+        path.resolve('src', 'uploads', 'avatars', req.file.filename),
+      );
+
+      photo = `${getEnvVar('APP_DOMAIN')}avatars/${req.file.filename}`;
+    }
+  }
+
   const contact = await updateContact({
     id: req.params.contactId,
     payload: req.body,
     ownerId: req.user.id,
+    photo,
   });
 
   if (contact === null) {

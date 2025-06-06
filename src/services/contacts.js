@@ -42,14 +42,18 @@ export const getContactById = async ({ id, ownerId }) => {
   return contacts;
 };
 
-export const postContact = async ({ payload, ownerId }) => {
-  return Contact.create({ ...payload, userId: ownerId });
+export const postContact = async ({ payload, ownerId, photo }) => {
+  return Contact.create({ ...payload, userId: ownerId, photo });
 };
 
-export const updateContact = async ({ id, payload, ownerId }) => {
-  return Contact.findOneAndUpdate({ _id: id, userId: ownerId }, payload, {
-    new: true,
-  });
+export const updateContact = async ({ id, payload, ownerId, photo }) => {
+  return Contact.findOneAndUpdate(
+    { _id: id, userId: ownerId, photo },
+    payload,
+    {
+      new: true,
+    },
+  );
 };
 
 export const deleteContact = async ({ id, ownerId }) => {
