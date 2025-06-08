@@ -55,7 +55,7 @@ export async function getContactByIdController(req, res) {
 export async function postContactController(req, res) {
   let photo = null;
 
-  if (req.filepath !== undefined) {
+  if (req.file.path !== undefined) {
     if (getEnvVar('UPLOAD_TO_CLOUDINARY') === 'true') {
       const result = await uploadToCloudinary(req.file.path);
       await fs.unlink(req.file.path);
@@ -86,7 +86,7 @@ export async function postContactController(req, res) {
 export async function updateContactController(req, res) {
   let photo = null;
 
-  if (req.filepath !== undefined) {
+  if (req.file.path !== undefined) {
     if (getEnvVar('UPLOAD_TO_CLOUDINARY') === 'true') {
       const result = await uploadToCloudinary(req.file.path);
       await fs.unlink(req.file.path);
@@ -101,7 +101,6 @@ export async function updateContactController(req, res) {
       photo = `${getEnvVar('APP_DOMAIN')}avatars/${req.file.filename}`;
     }
   }
-
   const contact = await updateContact({
     id: req.params.contactId,
     payload: req.body,
