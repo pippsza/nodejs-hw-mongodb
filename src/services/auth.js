@@ -54,18 +54,25 @@ export async function logoutUser(sessionId, refreshToken) {
 
 export async function refreshSession(sessionId, refreshToken) {
   const session = await Session.findOne({ _id: sessionId });
+
   if (session == null) {
     throw new createHttpError.Unauthorized('Session not found.');
   }
+
   if (session.refreshToken !== refreshToken) {
     throw new createHttpError.Unauthorized('Refresh token is invalid');
   }
+
   if (session.refreshTokenValidUntil < new Date()) {
     throw new createHttpError.Unauthorized('Refresh token is expired.');
   }
+
   await Session.deleteOne({ userId: session._id });
+
   const accessToken = crypto.randomBytes(30).toString('base64');
+
   const newRefreshToken = crypto.randomBytes(30).toString('base64');
+
   return Session.create({
     userId: session._id,
     accessToken: accessToken,

@@ -39,7 +39,7 @@ authRoutes.post(
   ctrlWrapper(sendResetEmailController),
 );
 authRoutes.post(
-  '/reset-password',
+  '/reset-pwd',
   jsonParser,
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
