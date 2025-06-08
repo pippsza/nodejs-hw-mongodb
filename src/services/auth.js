@@ -67,14 +67,13 @@ export async function refreshSession(sessionId, refreshToken) {
     throw new createHttpError.Unauthorized('Refresh token is expired.');
   }
 
-  await Session.deleteOne({ userId: session._id });
+  await Session.deleteOne({ userId: session.userId });
 
   const accessToken = crypto.randomBytes(30).toString('base64');
-
   const newRefreshToken = crypto.randomBytes(30).toString('base64');
 
   return Session.create({
-    userId: session._id,
+    userId: session.userId,
     accessToken: accessToken,
     refreshToken: newRefreshToken,
     accessTokenValidUntil: dataExpiredForToken,

@@ -53,12 +53,12 @@ export async function refreshController(req, res) {
   const session = await refreshSession(sessionId, refreshToken);
 
   res.cookie('sessionId', session._id, {
-    htttpOnly: true,
+    httpOnly: true,
     expire: session.refreshTokenValidUntil,
   });
 
   res.cookie('refreshToken', session.refreshToken, {
-    htttpOnly: true,
+    httpOnly: true,
     expire: session.refreshTokenValidUntil,
   });
 
