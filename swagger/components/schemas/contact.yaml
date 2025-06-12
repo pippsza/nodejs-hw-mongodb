@@ -1,0 +1,48 @@
+type: object
+required:
+  - _id
+  - name
+  - photo
+  - phoneNumber
+  - userId
+  - createdAt
+  - updatedAt
+
+properties:
+  _id:
+    type: string
+    description: Contact id
+    example: 507f191e810c19729de860ea
+  name:
+    type: string
+    description: Contact name
+    example: Dave Norton
+  photo:
+    type: string
+    format: url
+    description: Contact avatar url
+    example: https://res.cloudinary.com/dha4xvgfi/image/upload/v1749060633/mef8zwaq73iedpo4owut.png
+  phoneNumber:
+    type: number
+    description: Contact  phoneNumber
+    example: +2459873451
+  onDuty:
+    type: boolean
+    description: Contact on on duty
+    example: true
+    default: false
+    userId:
+    type: string
+    description: Contact user id
+    example: 6592008029c8c3e4dc76256c
+
+  createdAt:
+    type: string
+    format: date-time
+    description: Contact created at
+    example: 2025-03-27T19:43:21.686+00:00
+  updatedAt:
+    type: string
+    format: date-time
+    description: Contact updated at
+    example: 2025-03-28T19:43:21.686+00:00
