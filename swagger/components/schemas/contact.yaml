@@ -2,8 +2,8 @@ type: object
 required:
   - _id
   - name
-  - photo
   - phoneNumber
+  - contactType
   - userId
   - createdAt
   - updatedAt
@@ -16,26 +16,34 @@ properties:
   name:
     type: string
     description: Contact name
-    example: Dave Norton
+    example: John Doe
+  phoneNumber:
+    type: string
+    description: Contact phone number
+    example: +380991234567
+  email:
+    type: string
+    description: Contact email
+    example: john@example.com
+  isFavourite:
+    type: boolean
+    description: Is contact favourite
+    example: false
+    default: false
+  contactType:
+    type: string
+    description: Contact type
+    enum: [work, home, personal]
+    example: personal
+  userId:
+    type: string
+    description: Contact owner id
+    example: 6592008029c8c3e4dc76256c
   photo:
     type: string
     format: url
-    description: Contact avatar url
+    description: Contact photo url
     example: https://res.cloudinary.com/dha4xvgfi/image/upload/v1749060633/mef8zwaq73iedpo4owut.png
-  phoneNumber:
-    type: number
-    description: Contact  phoneNumber
-    example: +2459873451
-  onDuty:
-    type: boolean
-    description: Contact on on duty
-    example: true
-    default: false
-  userId:
-    type: string
-    description: Contact user id
-    example: 6592008029c8c3e4dc76256c
-
   createdAt:
     type: string
     format: date-time
