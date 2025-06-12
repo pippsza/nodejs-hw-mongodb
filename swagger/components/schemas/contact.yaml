@@ -31,7 +31,7 @@ properties:
     description: Contact on on duty
     example: true
     default: false
-    userId:
+  userId:
     type: string
     description: Contact user id
     example: 6592008029c8c3e4dc76256c

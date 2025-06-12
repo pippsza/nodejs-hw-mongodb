@@ -17,7 +17,9 @@ paths:
   /contacts/{id}:
     get:
       $ref: '../swagger/paths/api/contacts/{id}/get.yaml'
-
+  /contacts:
+    post:
+      $ref: '../swagger/paths/api/contacts/post.yaml'
   # тут будуть посилання на ендпоінти
 components:
   securitySchemes:

@@ -1,8 +1,8 @@
 tags:
-  - Students
-summary: Create student
-operationId: createStudent
-description: Create student
+  - Contacts
+summary: Create Contacts
+operationId: createContacts
+description: Create Contact
 security:
   - bearerAuth: []
 requestBody:
@@ -18,29 +18,30 @@ requestBody:
         properties:
           name:
             type: string
-            description: Student name
+            description: Contact name
             example: Dave Norton
-          gender:
+          photo:
             type: string
-            description: Student gender
-            enum: ['male', 'female']
-            example: male
-          year:
+            format: url
+            description: Contact avatar url
+            example: https://res.cloudinary.com/dha4xvgfi/image/upload/v1749060633/mef8zwaq73iedpo4owut.png
+          phoneNumber:
             type: number
-            description: Student born year
-            example: 1998
+            description: Contact  phoneNumber
+            example: +2459873451
           onDuty:
             type: boolean
-            description: Student on duty
+            description: Contact on on duty
             example: true
             default: false
-          avatar:
+          userId:
             type: string
-            format: binary
-            description: Student avatar
+            description: Contact user id
+            example: 6592008029c8c3e4dc76256c
+
 responses:
   '201':
-    description: Created a student
+    description: Created a contact
     content:
       application/json:
         schema:
@@ -55,9 +56,9 @@ responses:
               example: 201
             message:
               type: string
-              example: Student created successfully
+              example: Contacts created successfully
             data:
-              $ref: ../../../components/schemas/student.yaml
+              $ref: ../../../components/schemas/contact.yaml
   '401':
     $ref: ../../../components/responses/401.yaml
   '500':

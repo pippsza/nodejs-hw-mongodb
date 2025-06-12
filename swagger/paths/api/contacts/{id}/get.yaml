@@ -31,7 +31,8 @@ responses:
               type: string
               example: Successfully get contacts
             data:
-              $ref: ../../../../components/schemas/contacts.yaml
+              $anchor:
+                $ref: ../../../../components/schemas/contact.yaml
   '401':
     $ref: ../../../../components/responses/401.yaml
   '404':
@@ -49,6 +50,6 @@ responses:
               example: 404
             message:
               type: string
-              example: Student not found
+              example: Contact not found
   '500':
     $ref: ../../../../components/responses/500.yaml
