@@ -27,4 +27,4 @@ responses:
                   type: string
                   example: https://accounts.google.com/o/oauth2/auth?...
   '500':
-    $ref: ../../../components/responses/500.yaml 
+    $ref: ../../components/responses/500.yaml 

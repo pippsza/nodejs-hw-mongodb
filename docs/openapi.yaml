@@ -15,42 +15,42 @@ servers:
   - url: http://localhost:3000
   - url: https://hw2-mongodb-qxg7.onrender.com
 paths:
-  /api/contacts:
+  /contacts:
     get:
-      $ref: '../swagger/paths/api/contacts/get.yaml'
+      $ref: '../swagger/paths/contacts/get.yaml'
     post:
-      $ref: '../swagger/paths/api/contacts/post.yaml'
-  /api/contacts/{contactId}:
+      $ref: '../swagger/paths/contacts/post.yaml'
+  /contacts/{contactId}:
     get:
-      $ref: '../swagger/paths/api/contacts/{contactId}/get.yaml'
+      $ref: '../swagger/paths/contacts/{contactId}/get.yaml'
     delete:
-      $ref: '../swagger/paths/api/contacts/{contactId}/delete.yaml'
+      $ref: '../swagger/paths/contacts/{contactId}/delete.yaml'
     patch:
-      $ref: '../swagger/paths/api/contacts/{contactId}/patch.yaml'
-  /api/auth/register:
+      $ref: '../swagger/paths/contacts/{contactId}/patch.yaml'
+  /auth/register:
     post:
-      $ref: '../swagger/paths/api/auth/register.yaml'
-  /api/auth/login:
+      $ref: '../swagger/paths/auth/register.yaml'
+  /auth/login:
     post:
-      $ref: '../swagger/paths/api/auth/login.yaml'
-  /api/auth/send-reset-email:
+      $ref: '../swagger/paths/auth/login.yaml'
+  /auth/send-reset-email:
     post:
-      $ref: '../swagger/paths/api/auth/send-reset-email.yaml'
-  /api/auth/reset-pwd:
+      $ref: '../swagger/paths/auth/send-reset-email.yaml'
+  /auth/reset-pwd:
     post:
-      $ref: '../swagger/paths/api/auth/reset-pwd.yaml'
-  /api/auth/refresh:
+      $ref: '../swagger/paths/auth/reset-pwd.yaml'
+  /auth/refresh:
     post:
-      $ref: '../swagger/paths/api/auth/refresh.yaml'
-  /api/auth/logout:
+      $ref: '../swagger/paths/auth/refresh.yaml'
+  /auth/logout:
     post:
-      $ref: '../swagger/paths/api/auth/logout.yaml'
-  /api/auth/get-oauth-url:
+      $ref: '../swagger/paths/auth/logout.yaml'
+  /auth/get-oauth-url:
     get:
-      $ref: '../swagger/paths/api/auth/get-oauth-url.yaml'
-  /api/auth/confirm-oauth:
+      $ref: '../swagger/paths/auth/get-oauth-url.yaml'
+  /auth/confirm-oauth:
     post:
-      $ref: '../swagger/paths/api/auth/confirm-oauth.yaml'
+      $ref: '../swagger/paths/auth/confirm-oauth.yaml'
 components:
   securitySchemes:
     bearerAuth:

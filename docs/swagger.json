@@ -28,7 +28,7 @@
     }
   ],
   "paths": {
-    "/api/contacts": {
+    "/contacts": {
       "get": {
         "tags": [
           "Contacts"
@@ -301,7 +301,7 @@
         }
       }
     },
-    "/api/contacts/{contactId}": {
+    "/contacts/{contactId}": {
       "get": {
         "tags": [
           "Contacts"
@@ -585,7 +585,7 @@
         }
       }
     },
-    "/api/auth/register": {
+    "/auth/register": {
       "post": {
         "tags": [
           "Auth"
@@ -662,7 +662,7 @@
         }
       }
     },
-    "/api/auth/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -671,6 +671,7 @@
         "operationId": "loginUser",
         "description": "Login user with email and password",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -683,12 +684,11 @@
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "User email",
-                    "example": "john@example.com"
+                    "example": "user@example.com"
                   },
                   "password": {
                     "type": "string",
-                    "description": "User password",
+                    "minLength": 6,
                     "example": "password123"
                   }
                 }
@@ -699,6 +699,15 @@
         "responses": {
           "200": {
             "description": "Login successful",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Session cookies",
+                "schema": {
+                  "type": "string",
+                  "example": "sessionId=...; HttpOnly; Path=/; Expires=...; refreshToken=...; HttpOnly; Path=/; Expires=..."
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -737,7 +746,7 @@
         }
       }
     },
-    "/api/auth/send-reset-email": {
+    "/auth/send-reset-email": {
       "post": {
         "tags": [
           "Auth"
@@ -800,7 +809,7 @@
         }
       }
     },
-    "/api/auth/reset-pwd": {
+    "/auth/reset-pwd": {
       "post": {
         "tags": [
           "Auth"
@@ -868,17 +877,46 @@
         }
       }
     },
-    "/api/auth/refresh": {
+    "/auth/refresh": {
       "post": {
         "tags": [
           "Auth"
         ],
         "summary": "Refresh session",
         "operationId": "refreshSession",
-        "description": "Refresh access token using refresh token from cookies",
+        "description": "Refresh access token using refresh token from cookies. Both sessionId and refreshToken cookies are required.",
+        "parameters": [
+          {
+            "in": "cookie",
+            "name": "sessionId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Session ID from login"
+          },
+          {
+            "in": "cookie",
+            "name": "refreshToken",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Refresh token from login"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Session refreshed successfully",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Updated session cookies",
+                "schema": {
+                  "type": "string",
+                  "example": "sessionId=...; HttpOnly; Path=/; Expires=...; refreshToken=...; HttpOnly; Path=/; Expires=..."
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -911,23 +949,25 @@
               }
             }
           },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/api/auth/logout": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "Logout user",
-        "operationId": "logoutUser",
-        "description": "Logout user and clear session cookies",
-        "responses": {
-          "204": {
-            "description": "Logout successful"
+          "401": {
+            "description": "Unauthorized - Invalid or expired refresh token, or missing cookies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Session not found or refresh token is invalid/expired"
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
             "$ref": "#/components/responses/500"
@@ -935,7 +975,34 @@
         }
       }
     },
-    "/api/auth/get-oauth-url": {
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout user",
+        "operationId": "logoutUser",
+        "description": "Logout user and clear session cookies. If session cookies are present, they will be used to invalidate the session on the server.",
+        "responses": {
+          "204": {
+            "description": "Logout successful",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Cleared session cookies",
+                "schema": {
+                  "type": "string",
+                  "example": "sessionId=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; refreshToken=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/get-oauth-url": {
       "get": {
         "tags": [
           "Auth"
@@ -983,15 +1050,16 @@
         }
       }
     },
-    "/api/auth/confirm-oauth": {
+    "/auth/confirm-oauth": {
       "post": {
         "tags": [
           "Auth"
         ],
-        "summary": "Confirm OAuth",
+        "summary": "Confirm OAuth login",
         "operationId": "confirmOAuth",
-        "description": "Confirm OAuth authentication with code",
+        "description": "Complete OAuth login with authorization code",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -1002,8 +1070,8 @@
                 "properties": {
                   "code": {
                     "type": "string",
-                    "description": "OAuth authorization code",
-                    "example": "4/0AfJohXn..."
+                    "description": "Authorization code from OAuth provider",
+                    "example": "4/0AfJohXnQ..."
                   }
                 }
               }
@@ -1012,7 +1080,16 @@
         },
         "responses": {
           "200": {
-            "description": "OAuth authentication successful",
+            "description": "OAuth login successful",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Session cookies",
+                "schema": {
+                  "type": "string",
+                  "example": "sessionId=...; HttpOnly; Path=/; Expires=...; refreshToken=...; HttpOnly; Path=/; Expires=..."
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {

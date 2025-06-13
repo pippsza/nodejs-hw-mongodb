@@ -1,0 +1,63 @@
+tags:
+  - Auth
+summary: Refresh session
+operationId: refreshSession
+description: Refresh access token using refresh token from cookies. Both sessionId and refreshToken cookies are required.
+parameters:
+  - in: cookie
+    name: sessionId
+    required: true
+    schema:
+      type: string
+    description: Session ID from login
+  - in: cookie
+    name: refreshToken
+    required: true
+    schema:
+      type: string
+    description: Refresh token from login
+responses:
+  '200':
+    description: Session refreshed successfully
+    headers:
+      Set-Cookie:
+        description: Updated session cookies
+        schema:
+          type: string
+          example: sessionId=...; HttpOnly; Path=/; Expires=...; refreshToken=...; HttpOnly; Path=/; Expires=...
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully refreshed a session!
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  '401':
+    description: Unauthorized - Invalid or expired refresh token, or missing cookies
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: Session not found or refresh token is invalid/expired
+  '500':
+    $ref: ../../components/responses/500.yaml

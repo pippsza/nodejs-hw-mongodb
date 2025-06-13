@@ -1,23 +1,35 @@
 tags:
   - Auth
-summary: Confirm OAuth
-operationId: confirmOAuth
-description: Confirm OAuth authentication with code
+summary: Login user
+operationId: loginUser
+description: Login user with email and password
 requestBody:
+  required: true
   content:
     application/json:
       schema:
         type: object
         required:
-          - code
+          - email
+          - password
         properties:
-          code:
+          email:
             type: string
-            description: OAuth authorization code
-            example: 4/0AfJohXn...
+            format: email
+            example: user@example.com
+          password:
+            type: string
+            minLength: 6
+            example: password123
 responses:
   '200':
-    description: OAuth authentication successful
+    description: Login successful
+    headers:
+      Set-Cookie:
+        description: Session cookies
+        schema:
+          type: string
+          example: sessionId=...; HttpOnly; Path=/; Expires=...; refreshToken=...; HttpOnly; Path=/; Expires=...
     content:
       application/json:
         schema:
@@ -32,7 +44,7 @@ responses:
               example: 200
             message:
               type: string
-              example: Login with Google successfully
+              example: Login successfully!
             data:
               type: object
               properties:
@@ -40,4 +52,4 @@ responses:
                   type: string
                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   '500':
-    $ref: ../../../components/responses/500.yaml 
+    $ref: ../../components/responses/500.yaml 

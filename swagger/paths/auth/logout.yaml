@@ -1,0 +1,16 @@
+tags:
+  - Auth
+summary: Logout user
+operationId: logoutUser
+description: Logout user and clear session cookies. If session cookies are present, they will be used to invalidate the session on the server.
+responses:
+  '204':
+    description: Logout successful
+    headers:
+      Set-Cookie:
+        description: Cleared session cookies
+        schema:
+          type: string
+          example: sessionId=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; refreshToken=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT
+  '500':
+    $ref: ../../components/responses/500.yaml 

@@ -32,9 +32,9 @@ responses:
               type: string
               example: Successfully found contacts!
             data:
-              $ref: ../../../../components/schemas/contact.yaml
+              $ref: ../../../components/schemas/contact.yaml
   '401':
-    $ref: ../../../../components/responses/401.yaml
+    $ref: ../../../components/responses/401.yaml
   '404':
     description: Contact not found
     content:
@@ -52,4 +52,4 @@ responses:
               type: string
               example: Contact not found
   '500':
-    $ref: ../../../../components/responses/500.yaml
+    $ref: ../../../components/responses/500.yaml

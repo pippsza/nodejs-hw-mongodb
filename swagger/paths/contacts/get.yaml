@@ -82,7 +82,7 @@ responses:
                 contacts:
                   type: array
                   items:
-                    $ref: ../../../components/schemas/contact.yaml
+                    $ref: ../../components/schemas/contact.yaml
                 pagination:
                   type: object
                   properties:
@@ -99,6 +99,6 @@ responses:
                       type: integer
                       example: 3
   '401':
-    $ref: ../../../components/responses/401.yaml
+    $ref: ../../components/responses/401.yaml
   '500':
-    $ref: ../../../components/responses/500.yaml 
+    $ref: ../../components/responses/500.yaml 
