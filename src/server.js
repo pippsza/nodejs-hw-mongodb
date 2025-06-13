@@ -14,6 +14,8 @@ const app = express();
 
 const PORT = getEnvVar('PORT');
 
+
+
 app.use('/avatars', express.static(path.resolve('src', 'uploads', 'avatars')));
 
 app.use(cookieParser());
