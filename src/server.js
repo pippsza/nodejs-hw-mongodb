@@ -10,10 +10,20 @@ import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/errorHandler.js';
 import authRoutes from './routes/auth.js';
 import { auth } from './middlewares/auth.js';
+import swaggerUI from 'swagger-ui-express';
+import fs from 'fs';
 const app = express();
 
 const PORT = getEnvVar('PORT');
 
+const SWAGGER_DOCUMENT = JSON.parse(
+  fs.readFileSync(path.join('docs', 'swagger.json'), 'utf-8'),
+);
+
+
+if (process.env.NODE_ENV === 'development') {
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(SWAGGER_DOCUMENT));
+}
 
 
 app.use('/avatars', express.static(path.resolve('src', 'uploads', 'avatars')));
